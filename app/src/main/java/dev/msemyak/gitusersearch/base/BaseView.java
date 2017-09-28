@@ -1,4 +1,8 @@
-package dev.msemyak.gitusersearch.mvp;
+package dev.msemyak.gitusersearch.base;
+
+import java.util.List;
+
+import dev.msemyak.gitusersearch.mvp.model.local.User;
 
 public interface BaseView {
 
@@ -10,6 +14,8 @@ public interface BaseView {
     void dismissWaitDialog();
 
     interface MainView extends BaseView{
+
+        void showUsers(List<User> usersList);
 
     }
 

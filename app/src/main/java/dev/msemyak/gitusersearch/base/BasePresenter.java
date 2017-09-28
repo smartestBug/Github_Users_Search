@@ -1,4 +1,4 @@
-package dev.msemyak.gitusersearch.mvp;
+package dev.msemyak.gitusersearch.base;
 
 public interface BasePresenter {
 
@@ -6,6 +6,7 @@ public interface BasePresenter {
 
     interface MainActivityPresenter extends BasePresenter{
 
+        void getUsersAndDisplay(String query);
 
     }
 }

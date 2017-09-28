@@ -32,7 +32,7 @@ import dev.msemyak.gitusersearch.R;
  */
 
 public class DelayedProgressDialog extends DialogFragment {
-    private static final int DELAY_MILLISECOND = 450;
+    private static final int DELAY_MILLISECOND = 10;
     private static final int SHOW_MIN_MILLISECOND = 300;
     private static final int PROGRESS_CONTENT_SIZE_DP = 80;
 
@@ -90,7 +90,7 @@ public class DelayedProgressDialog extends DialogFragment {
         super.show(fm, tag);
     }
 
-    public void cancel() {
+    public void dissmiss() {
         mStopMillisecond = System.currentTimeMillis();
 
         if (startedShowing) {

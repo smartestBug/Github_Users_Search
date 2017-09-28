@@ -32,11 +32,11 @@ public class UserSearchResponse {
         this.incompleteResults = incompleteResults;
     }
 
-    public List<User> getItems() {
+    public List<User> getUsers() {
         return items;
     }
 
-    public void setItems(List<User> items) {
+    public void setUsers(List<User> items) {
         this.items = items;
     }
 
