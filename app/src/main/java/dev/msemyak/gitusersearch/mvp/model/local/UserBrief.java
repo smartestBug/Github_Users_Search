@@ -3,7 +3,7 @@ package dev.msemyak.gitusersearch.mvp.model.local;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class User {
+public class UserBrief {
 
     @SerializedName("login")
     @Expose

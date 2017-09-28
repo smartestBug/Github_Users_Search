@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="dev.msemyak.gitusersearch.mvp.view.UserDetailsActivity"
+    tools:showIn="@layout/activity_user_details">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="16dp"
+                android:paddingRight="16dp">
+
+                <TextView
+                    android:id="@+id/tv_user_heading"
+                    style="@style/UserDetailText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:text="About"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <TextView
+                    android:id="@+id/tv_user_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginStart="16dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/iv_user_name"
+                    app:layout_constraintLeft_toRightOf="@+id/iv_user_name"
+                    app:layout_constraintTop_toTopOf="@+id/iv_user_name"
+                    app:layout_constraintVertical_bias="0.444"
+                    tools:text="Name"/>
+
+                <TextView
+                    android:id="@+id/tv_user_repos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginStart="16dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/iv_user_repos"
+                    app:layout_constraintLeft_toRightOf="@+id/iv_user_repos"
+                    app:layout_constraintTop_toTopOf="@+id/iv_user_repos"
+                    tools:text="Repos"/>
+
+                <ImageView
+                    android:id="@+id/iv_user_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    app:layout_constraintLeft_toLeftOf="@+id/tv_user_heading"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_user_heading"
+                    app:srcCompat="@drawable/ic_person"
+                    tools:ignore="VectorDrawableCompat"/>
+
+                <ImageView
+                    android:id="@+id/iv_user_email"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintLeft_toLeftOf="@+id/iv_user_name"
+                    app:layout_constraintTop_toBottomOf="@+id/iv_user_name"
+                    app:srcCompat="@drawable/ic_email"/>
+
+                <TextView
+                    android:id="@+id/tv_user_email"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginStart="16dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/iv_user_email"
+                    app:layout_constraintLeft_toRightOf="@+id/iv_user_email"
+                    app:layout_constraintTop_toTopOf="@+id/iv_user_email"
+                    tools:text="Email"/>
+
+                <ImageView
+                    android:id="@+id/iv_user_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintLeft_toLeftOf="@+id/iv_user_email"
+                    app:layout_constraintTop_toBottomOf="@+id/iv_user_email"
+                    app:srcCompat="@drawable/ic_location"/>
+
+                <ImageView
+                    android:id="@+id/iv_user_bio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_user_bio"
+                    app:layout_constraintLeft_toLeftOf="@+id/iv_user_repos"
+                    app:layout_constraintTop_toTopOf="@+id/tv_user_bio"
+                    app:srcCompat="@drawable/ic_bio"/>
+
+                <ImageView
+                    android:id="@+id/iv_user_created"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintLeft_toLeftOf="@+id/iv_user_location"
+                    app:layout_constraintTop_toBottomOf="@+id/iv_user_location"
+                    app:srcCompat="@drawable/ic_created"/>
+
+                <ImageView
+                    android:id="@+id/iv_user_followers"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintLeft_toLeftOf="@+id/iv_user_created"
+                    app:layout_constraintTop_toBottomOf="@+id/iv_user_created"
+                    app:srcCompat="@drawable/ic_following"/>
+
+                <ImageView
+                    android:id="@+id/iv_user_following"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintLeft_toLeftOf="@+id/iv_user_followers"
+                    app:layout_constraintTop_toBottomOf="@+id/iv_user_followers"
+                    app:srcCompat="@drawable/ic_people_followers"/>
+
+                <ImageView
+                    android:id="@+id/iv_user_repos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintLeft_toLeftOf="@+id/iv_user_following"
+                    app:layout_constraintTop_toBottomOf="@+id/iv_user_following"
+                    app:srcCompat="@drawable/ic_repos"/>
+
+                <TextView
+                    android:id="@+id/tv_user_bio"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="12dp"
+                    android:inputType="textMultiLine"
+                    app:layout_constraintHorizontal_bias="0.275"
+                    app:layout_constraintLeft_toRightOf="@+id/iv_user_bio"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/iv_user_repos"
+                    tools:text="@string/large_text"/>
+
+                <TextView
+                    android:id="@+id/tv_user_created"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginStart="16dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/iv_user_created"
+                    app:layout_constraintLeft_toRightOf="@+id/iv_user_created"
+                    app:layout_constraintTop_toTopOf="@+id/iv_user_created"
+                    tools:text="Created"/>
+
+                <TextView
+                    android:id="@+id/tv_user_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginStart="16dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/iv_user_location"
+                    app:layout_constraintLeft_toRightOf="@+id/iv_user_location"
+                    app:layout_constraintTop_toTopOf="@+id/iv_user_location"
+                    tools:text="Location"/>
+
+                <TextView
+                    android:id="@+id/tv_user_followers"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginStart="16dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/iv_user_followers"
+                    app:layout_constraintLeft_toRightOf="@+id/iv_user_followers"
+                    app:layout_constraintTop_toTopOf="@+id/iv_user_followers"
+                    tools:text="Followers"/>
+
+                <TextView
+                    android:id="@+id/tv_user_following"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginStart="16dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/iv_user_following"
+                    app:layout_constraintLeft_toRightOf="@+id/iv_user_following"
+                    app:layout_constraintTop_toTopOf="@+id/iv_user_following"
+                    tools:text="Following"/>
+
+            </android.support.constraint.ConstraintLayout>
+
+
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="16dp">
+
+                <TextView
+                    android:id="@+id/tv_user_repos_heading"
+                    style="@style/UserDetailText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:text="Repositories"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <TextView
+                    android:id="@+id/tv_user_repos_list"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    app:layout_constraintLeft_toLeftOf="@+id/tv_user_repos_heading"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_user_repos_heading"
+                    tools:text="Repos list"/>
+
+            </android.support.constraint.ConstraintLayout>
+        </android.support.v7.widget.CardView>
+
+    </LinearLayout>
+
+</android.support.v4.widget.NestedScrollView>

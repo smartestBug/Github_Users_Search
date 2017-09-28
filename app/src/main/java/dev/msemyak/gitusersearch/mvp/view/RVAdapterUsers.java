@@ -11,23 +11,24 @@ import android.widget.TextView;
 import java.util.List;
 
 import dev.msemyak.gitusersearch.R;
-import dev.msemyak.gitusersearch.mvp.model.local.User;
+import dev.msemyak.gitusersearch.base.BaseView;
+import dev.msemyak.gitusersearch.mvp.model.local.UserBrief;
 import dev.msemyak.gitusersearch.utils.GlideApp;
 
 
 class RVAdapterUsers extends RecyclerView.Adapter<RVAdapterUsers.myViewHolder> {
 
-    private List<User> usersList;
+    private List<UserBrief> usersList;
     private Context context;
-    private RVItemClickListener clickListener;
+    private BaseView.RVItemClickListener clickListener;
 
-    RVAdapterUsers(List<User> usersList, Context context, RVItemClickListener clickListener) {
+    RVAdapterUsers(List<UserBrief> usersList, Context context, BaseView.RVItemClickListener clickListener) {
         this.usersList = usersList;
         this.context = context;
         this.clickListener = clickListener;
     }
 
-    void setNewData(List<User> usersList) {
+    void setNewData(List<UserBrief> usersList) {
         this.usersList = usersList;
     }
 
@@ -40,7 +41,7 @@ class RVAdapterUsers extends RecyclerView.Adapter<RVAdapterUsers.myViewHolder> {
     @Override
     public void onBindViewHolder(final myViewHolder holder, int position) {
 
-        User userForDataBind = usersList.get(position);
+        UserBrief userForDataBind = usersList.get(position);
 
         GlideApp.with(context)
                 .load(userForDataBind.getAvatarUrl())
@@ -50,6 +51,7 @@ class RVAdapterUsers extends RecyclerView.Adapter<RVAdapterUsers.myViewHolder> {
         holder.tvUsername.setText(userForDataBind.getLogin());
         holder.tvScore.setText(userForDataBind.getScore().toString());
         holder.username = userForDataBind.getLogin();
+        holder.avatarUrl = userForDataBind.getAvatarUrl();
     }
 
     @Override
@@ -63,9 +65,11 @@ class RVAdapterUsers extends RecyclerView.Adapter<RVAdapterUsers.myViewHolder> {
         TextView tvUsername;
         TextView tvScore;
         String username;
-        RVItemClickListener clickListener;
+        String avatarUrl;
 
-        myViewHolder(View v, RVItemClickListener clickListener) {
+        BaseView.RVItemClickListener clickListener;
+
+        myViewHolder(View v, BaseView.RVItemClickListener clickListener) {
             super(v);
             ivAvatar = v.findViewById(R.id.iv_avatar);
             tvUsername = v.findViewById(R.id.tv_username);
@@ -76,7 +80,7 @@ class RVAdapterUsers extends RecyclerView.Adapter<RVAdapterUsers.myViewHolder> {
 
         @Override
         public void onClick(View view) {
-            clickListener.onRVItemClick(view, username);
+            clickListener.onRVItemClick(view, username, avatarUrl);
         }
     }
 

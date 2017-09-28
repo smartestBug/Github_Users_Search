@@ -13,8 +13,8 @@
     <color name="colorAccent3">#ece2d0</color>
 
     <color name="userInfoBackground">#ffffff</color>
-    <color name="userInfoHeading">#000000</color>
-    <color name="userInfoText">#000000</color>
+    <color name="userInfoHeading">#777777</color>
+    <color name="userInfoText">#999999</color>
 </resources>
 
 

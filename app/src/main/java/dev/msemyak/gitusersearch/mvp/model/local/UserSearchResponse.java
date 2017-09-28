@@ -14,7 +14,7 @@ public class UserSearchResponse {
     private Boolean incompleteResults;
     @SerializedName("items")
     @Expose
-    private List<User> items = null;
+    private List<UserBrief> items = null;
 
     public Integer getTotalCount() {
         return totalCount;
@@ -32,11 +32,11 @@ public class UserSearchResponse {
         this.incompleteResults = incompleteResults;
     }
 
-    public List<User> getUsers() {
+    public List<UserBrief> getUsers() {
         return items;
     }
 
-    public void setUsers(List<User> items) {
+    public void setUsers(List<UserBrief> items) {
         this.items = items;
     }
 

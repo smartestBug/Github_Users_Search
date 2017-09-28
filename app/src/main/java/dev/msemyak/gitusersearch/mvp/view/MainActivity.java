@@ -2,6 +2,7 @@ package dev.msemyak.gitusersearch.mvp.view;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,6 +11,7 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.View;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -18,15 +20,15 @@ import dev.msemyak.gitusersearch.R;
 import dev.msemyak.gitusersearch.base.BaseActivity;
 import dev.msemyak.gitusersearch.base.BasePresenter;
 import dev.msemyak.gitusersearch.base.BaseView;
-import dev.msemyak.gitusersearch.mvp.model.local.User;
+import dev.msemyak.gitusersearch.mvp.model.local.UserBrief;
 import dev.msemyak.gitusersearch.mvp.presenter.MainActivityPresenter;
 
-import static android.support.v7.recyclerview.R.attr.layoutManager;
 import static dev.msemyak.gitusersearch.utils.Logg.Logg;
 
-public class MainActivity extends BaseActivity<BasePresenter.MainActivityPresenter> implements BaseView.MainView, RVItemClickListener, SearchView.OnQueryTextListener {
+public class MainActivity extends BaseActivity<BasePresenter.MainActivityPresenter> implements BaseView.MainView, BaseView.RVItemClickListener, SearchView.OnQueryTextListener {
 
     @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.tv_aux) TextView tvAux;
     @BindView(R.id.rv_main) RecyclerView recyclerViewMain;
 
     private RVAdapterUsers listAdapter = null;
@@ -60,18 +62,18 @@ public class MainActivity extends BaseActivity<BasePresenter.MainActivityPresent
 
     @Override
     public boolean onQueryTextSubmit(String query) {
+        Logg("Text submitted, init search");
         myPresenter.getUsersAndDisplay(query);
-        return false;
+        return true;
     }
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        Logg("###### Changed text: " + newText);
         return false;
     }
 
     @Override
-    public void showUsers(List<User> usersList) {
+    public void showUsers(List<UserBrief> usersList) {
 
         if (listAdapter == null) {
 
@@ -83,24 +85,55 @@ public class MainActivity extends BaseActivity<BasePresenter.MainActivityPresent
             DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerViewMain.getContext(), layoutManager.getOrientation());
             recyclerViewMain.addItemDecoration(dividerItemDecoration);
 
+            recyclerViewMain.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                    super.onScrolled(recyclerView, dx, dy);
+                    if (!recyclerView.canScrollVertically(1)) {
+                        Logg("Scrolled to bottom!!!");
+                        myPresenter.loadMoreUsers();
+                    }
+                }
+            });
+
         }
         else {
             listAdapter.setNewData(usersList);
-            listAdapter.notifyDataSetChanged();
+            notifyAdapterDataChange();
             //recyclerViewMain.smoothScrollToPosition(usersList.size()-1);
         }
 
     }
 
     @Override
-    public void onRVItemClick(View v, String username) {
-        showMessage("User was clicked: " + username);
+    public void openUserDetails(String userName, String avatarUrl, String userEmail, String userLocation, String userBio, String userCreated, String userFollowers, String userFollowing, String userRepos, String userRepoNames) {
+        Intent userDetailsIntent = new Intent(getApplicationContext(), UserDetailsActivity.class);
+        userDetailsIntent.putExtra("username", userName);
+        userDetailsIntent.putExtra("avatar_url", avatarUrl);
+        userDetailsIntent.putExtra("email", userEmail);
+        userDetailsIntent.putExtra("location", userLocation);
+        userDetailsIntent.putExtra("bio", userBio);
+        userDetailsIntent.putExtra("created", userCreated);
+        userDetailsIntent.putExtra("followers", userFollowers);
+        userDetailsIntent.putExtra("following", userFollowing);
+        userDetailsIntent.putExtra("repos", userRepos);
+        userDetailsIntent.putExtra("repos_names", userRepoNames);
+        startActivity(userDetailsIntent);
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        myPresenter.unsubscribeObservers();
+    public void notifyAdapterDataChange() {
+        listAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void setAuxText(String msg) {
+        tvAux.setText(msg);
+    }
+
+    @Override
+    public void onRVItemClick(View v, String username, String avatarUrl) {
+        myPresenter.loadSpecificUser(username);
     }
 
     @Override
@@ -109,7 +142,7 @@ public class MainActivity extends BaseActivity<BasePresenter.MainActivityPresent
     }
 
     @Override
-    protected MainActivityPresenter getPresenter() {
+    protected BasePresenter.MainActivityPresenter getPresenter() {
         return new MainActivityPresenter(this);
     }
 }

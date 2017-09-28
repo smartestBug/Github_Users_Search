@@ -12,7 +12,7 @@ import butterknife.ButterKnife;
 import dev.msemyak.gitusersearch.R;
 import dev.msemyak.gitusersearch.utils.DelayedProgressDialog;
 
-public abstract class BaseActivity<T> extends AppCompatActivity {
+public abstract class BaseActivity<T extends BasePresenter> extends AppCompatActivity {
 
     public T myPresenter;
 
@@ -33,13 +33,13 @@ public abstract class BaseActivity<T> extends AppCompatActivity {
     protected abstract T getPresenter();
 
     public void showMessage(String message) {
-        Snackbar.make(findViewById(R.id.constraintLayout), message, BaseTransientBottomBar.LENGTH_LONG).show();
-        //Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        //Snackbar.make(findViewById(R.id.constraintLayout), message, BaseTransientBottomBar.LENGTH_LONG).show();
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
     public void showMessage(int stringId) {
-        Snackbar.make(findViewById(R.id.constraintLayout), getString(stringId), BaseTransientBottomBar.LENGTH_LONG).show();
-        //Toast.makeText(this, getString(stringId), Toast.LENGTH_LONG).show();
+        //Snackbar.make(findViewById(R.id.constraintLayout), getString(stringId), BaseTransientBottomBar.LENGTH_LONG).show();
+        Toast.makeText(this, getString(stringId), Toast.LENGTH_LONG).show();
     }
 
     public void showWaitDialog(String message) {
@@ -51,7 +51,7 @@ public abstract class BaseActivity<T> extends AppCompatActivity {
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage(message);
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progressDialog.setCancelable(false);
+        progressDialog.setCancelable(true);
         progressDialog.show();
 
     }
@@ -62,5 +62,11 @@ public abstract class BaseActivity<T> extends AppCompatActivity {
 
     public void dismissWaitDialog() {
         progressDialog.dismiss();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        myPresenter.unsubscribeObservers();
     }
 }

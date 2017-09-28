@@ -7,6 +7,12 @@ public interface BasePresenter {
     interface MainActivityPresenter extends BasePresenter{
 
         void getUsersAndDisplay(String query);
+        void loadMoreUsers();
+        void loadSpecificUser(String username);
+    }
+
+    interface UserDetailsPresenter extends BasePresenter{
 
     }
+
 }
