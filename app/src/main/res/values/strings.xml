@@ -1,22 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">GitUserSearch</string>
+    <string name="app_name">GitHub Users Search</string>
     <string name="app_label">App label</string>
     <string name="search_hint">Search hint</string>
     <string name="search_title">Search title</string>
     <string name="title_activity_user_details">UserDetailsActivity</string>
-    <string name="large_text">
-        "Material is the metaphor.\n\n"
-
-        "A material metaphor is the unifying theory of a rationalized space and a system of motion."
-        "The material is grounded in tactile reality, inspired by the study of paper and ink, yet "
-        "technologically advanced and open to imagination and magic.\n"
-        "Surfaces and edges of the material provide visual cues that are grounded in reality. The "
-        "use of familiar tactile attributes helps users quickly understand affordances. Yet the "
-        "flexibility of the material creates new affordances that supercede those in the physical "
-        "world, without breaking the rules of physics.\n"
-        "The fundamentals of light, surface, and movement are key to conveying how objects move, "
-        "interact, and exist in space and in relation to each other. Realistic lighting shows "
-        "seams, divides space, and indicates moving parts.\n\n"
-    </string>
     <string name="action_settings">Settings</string>
+    <string name="fetch_user">Fetching user…</string>
+    <string name="fetch_users">Fetching users…</string>
+    <string name="error_loading_user">Error loading users!</string>
+    <string name="error_loading_more_users">Error loading next page of users!</string>
+    <string name="error_loading_user_info">Error loading user information!</string>
+    <string name="users_displayed">Users displayed:</string>
+    <string name="app_title_for_toolbar">GitHub users search</string>
+    <string name="about_user">About</string>
+    <string name="user_repositories">Repositories</string>
 </resources>

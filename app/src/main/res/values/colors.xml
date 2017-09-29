@@ -8,9 +8,9 @@
     <color name="colorPrimaryDark2">#f47d00</color>
     <color name="colorAccent2">#ffdf7d</color>
 
-    <color name="colorPrimary3">#a26769</color>
-    <color name="colorPrimaryDark3">#582C4D</color>
-    <color name="colorAccent3">#ece2d0</color>
+    <color name="colorPrimary3">#FF3C38</color>
+    <color name="colorPrimaryDark3">#870f1f</color>
+    <color name="colorAccent3">#FF8C42</color>
 
     <color name="userInfoBackground">#ffffff</color>
     <color name="userInfoHeading">#777777</color>

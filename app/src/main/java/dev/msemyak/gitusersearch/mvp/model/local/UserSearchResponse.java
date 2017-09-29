@@ -20,24 +20,8 @@ public class UserSearchResponse {
         return totalCount;
     }
 
-    public void setTotalCount(Integer totalCount) {
-        this.totalCount = totalCount;
-    }
-
-    public Boolean getIncompleteResults() {
-        return incompleteResults;
-    }
-
-    public void setIncompleteResults(Boolean incompleteResults) {
-        this.incompleteResults = incompleteResults;
-    }
-
     public List<UserBrief> getUsers() {
         return items;
-    }
-
-    public void setUsers(List<UserBrief> items) {
-        this.items = items;
     }
 
 }

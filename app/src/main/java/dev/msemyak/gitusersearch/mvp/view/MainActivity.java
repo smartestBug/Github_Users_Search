@@ -11,7 +11,9 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
+import android.widget.ViewFlipper;
 
 import java.util.List;
 
@@ -23,13 +25,13 @@ import dev.msemyak.gitusersearch.base.BaseView;
 import dev.msemyak.gitusersearch.mvp.model.local.UserBrief;
 import dev.msemyak.gitusersearch.mvp.presenter.MainActivityPresenter;
 
-import static dev.msemyak.gitusersearch.utils.Logg.Logg;
 
 public class MainActivity extends BaseActivity<BasePresenter.MainActivityPresenter> implements BaseView.MainView, BaseView.RVItemClickListener, SearchView.OnQueryTextListener {
 
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.tv_aux) TextView tvAux;
     @BindView(R.id.rv_main) RecyclerView recyclerViewMain;
+    @BindView(R.id.view_flipper) ViewFlipper viewFlipper;
 
     private RVAdapterUsers listAdapter = null;
     private LinearLayoutManager layoutManager;
@@ -42,7 +44,7 @@ public class MainActivity extends BaseActivity<BasePresenter.MainActivityPresent
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
-        getSupportActionBar().setTitle("GitHub users search");
+        getSupportActionBar().setTitle(R.string.app_title_for_toolbar);
 
     }
 
@@ -62,7 +64,6 @@ public class MainActivity extends BaseActivity<BasePresenter.MainActivityPresent
 
     @Override
     public boolean onQueryTextSubmit(String query) {
-        Logg("Text submitted, init search");
         myPresenter.getUsersAndDisplay(query);
         return true;
     }
@@ -74,6 +75,11 @@ public class MainActivity extends BaseActivity<BasePresenter.MainActivityPresent
 
     @Override
     public void showUsers(List<UserBrief> usersList) {
+
+        viewFlipper.setDisplayedChild(viewFlipper.indexOfChild(viewFlipper.findViewById(R.layout.incl_main_screen_layout)));
+
+        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
 
         if (listAdapter == null) {
 
@@ -90,7 +96,6 @@ public class MainActivity extends BaseActivity<BasePresenter.MainActivityPresent
                 public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                     super.onScrolled(recyclerView, dx, dy);
                     if (!recyclerView.canScrollVertically(1)) {
-                        Logg("Scrolled to bottom!!!");
                         myPresenter.loadMoreUsers();
                     }
                 }
@@ -100,7 +105,7 @@ public class MainActivity extends BaseActivity<BasePresenter.MainActivityPresent
         else {
             listAdapter.setNewData(usersList);
             notifyAdapterDataChange();
-            //recyclerViewMain.smoothScrollToPosition(usersList.size()-1);
+            recyclerViewMain.scrollToPosition(0);
         }
 
     }
@@ -128,7 +133,8 @@ public class MainActivity extends BaseActivity<BasePresenter.MainActivityPresent
 
     @Override
     public void setAuxText(String msg) {
-        tvAux.setText(msg);
+        String auxString = getString(R.string.users_displayed) + msg;
+        tvAux.setText(auxString);
     }
 
     @Override

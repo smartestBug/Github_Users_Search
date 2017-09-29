@@ -18,7 +18,12 @@
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -28,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:paddingBottom="16dp"
-                android:paddingRight="16dp">
+                >
 
                 <TextView
                     android:id="@+id/tv_user_heading"
@@ -39,7 +44,7 @@
                     android:layout_marginLeft="16dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
-                    android:text="About"
+                    android:text="@string/about_user"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent"/>
 
@@ -74,7 +79,7 @@
                     app:layout_constraintLeft_toLeftOf="@+id/tv_user_heading"
                     app:layout_constraintTop_toBottomOf="@+id/tv_user_heading"
                     app:srcCompat="@drawable/ic_person"
-                    tools:ignore="VectorDrawableCompat"/>
+                    tools:ignore="ContentDescription"/>
 
                 <ImageView
                     android:id="@+id/iv_user_email"
@@ -83,7 +88,8 @@
                     android:layout_marginTop="8dp"
                     app:layout_constraintLeft_toLeftOf="@+id/iv_user_name"
                     app:layout_constraintTop_toBottomOf="@+id/iv_user_name"
-                    app:srcCompat="@drawable/ic_email"/>
+                    app:srcCompat="@drawable/ic_email"
+                    tools:ignore="ContentDescription"/>
 
                 <TextView
                     android:id="@+id/tv_user_email"
@@ -103,7 +109,8 @@
                     android:layout_marginTop="8dp"
                     app:layout_constraintLeft_toLeftOf="@+id/iv_user_email"
                     app:layout_constraintTop_toBottomOf="@+id/iv_user_email"
-                    app:srcCompat="@drawable/ic_location"/>
+                    app:srcCompat="@drawable/ic_location"
+                    tools:ignore="ContentDescription"/>
 
                 <ImageView
                     android:id="@+id/iv_user_bio"
@@ -112,7 +119,8 @@
                     app:layout_constraintBottom_toBottomOf="@+id/tv_user_bio"
                     app:layout_constraintLeft_toLeftOf="@+id/iv_user_repos"
                     app:layout_constraintTop_toTopOf="@+id/tv_user_bio"
-                    app:srcCompat="@drawable/ic_bio"/>
+                    app:srcCompat="@drawable/ic_bio"
+                    tools:ignore="ContentDescription"/>
 
                 <ImageView
                     android:id="@+id/iv_user_created"
@@ -121,7 +129,8 @@
                     android:layout_marginTop="8dp"
                     app:layout_constraintLeft_toLeftOf="@+id/iv_user_location"
                     app:layout_constraintTop_toBottomOf="@+id/iv_user_location"
-                    app:srcCompat="@drawable/ic_created"/>
+                    app:srcCompat="@drawable/ic_created"
+                    tools:ignore="ContentDescription"/>
 
                 <ImageView
                     android:id="@+id/iv_user_followers"
@@ -130,7 +139,8 @@
                     android:layout_marginTop="8dp"
                     app:layout_constraintLeft_toLeftOf="@+id/iv_user_created"
                     app:layout_constraintTop_toBottomOf="@+id/iv_user_created"
-                    app:srcCompat="@drawable/ic_following"/>
+                    app:srcCompat="@drawable/ic_following"
+                    tools:ignore="ContentDescription"/>
 
                 <ImageView
                     android:id="@+id/iv_user_following"
@@ -139,7 +149,8 @@
                     android:layout_marginTop="8dp"
                     app:layout_constraintLeft_toLeftOf="@+id/iv_user_followers"
                     app:layout_constraintTop_toBottomOf="@+id/iv_user_followers"
-                    app:srcCompat="@drawable/ic_people_followers"/>
+                    app:srcCompat="@drawable/ic_people_followers"
+                    tools:ignore="ContentDescription"/>
 
                 <ImageView
                     android:id="@+id/iv_user_repos"
@@ -148,7 +159,8 @@
                     android:layout_marginTop="8dp"
                     app:layout_constraintLeft_toLeftOf="@+id/iv_user_following"
                     app:layout_constraintTop_toBottomOf="@+id/iv_user_following"
-                    app:srcCompat="@drawable/ic_repos"/>
+                    app:srcCompat="@drawable/ic_repos"
+                    tools:ignore="ContentDescription"/>
 
                 <TextView
                     android:id="@+id/tv_user_bio"
@@ -156,15 +168,16 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
                     android:layout_marginEnd="8dp"
+                    android:layout_marginLeft="16dp"
                     android:layout_marginRight="8dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="12dp"
-                    android:inputType="textMultiLine"
                     app:layout_constraintHorizontal_bias="0.275"
                     app:layout_constraintLeft_toRightOf="@+id/iv_user_bio"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/iv_user_repos"
-                    tools:text="@string/large_text"/>
+                    tools:text="Bio"
+                    />
 
                 <TextView
                     android:id="@+id/tv_user_created"
@@ -218,7 +231,12 @@
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -235,7 +253,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
-                    android:text="Repositories"
+                    android:text="@string/user_repositories"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent"/>
 

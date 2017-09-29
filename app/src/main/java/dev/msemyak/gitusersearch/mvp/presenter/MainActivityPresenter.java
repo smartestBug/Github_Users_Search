@@ -3,6 +3,7 @@ package dev.msemyak.gitusersearch.mvp.presenter;
 import java.util.ArrayList;
 import java.util.List;
 
+import dev.msemyak.gitusersearch.R;
 import dev.msemyak.gitusersearch.base.BasePresenter;
 import dev.msemyak.gitusersearch.base.BasePresenterImpl;
 import dev.msemyak.gitusersearch.base.BaseView;
@@ -14,16 +15,14 @@ import dev.msemyak.gitusersearch.utils.RxUtil;
 import io.reactivex.Single;
 import io.reactivex.disposables.CompositeDisposable;
 
-import static dev.msemyak.gitusersearch.utils.Logg.Logg;
-
 public class MainActivityPresenter extends BasePresenterImpl<BaseView.MainView> implements BasePresenter.MainActivityPresenter {
 
     private CompositeDisposable subscriptions = new CompositeDisposable();
 
-    List<UserBrief> usersList;
-    int page;
-    int usersNumber;
-    String query;
+    private List<UserBrief> usersList;
+    private int page;
+    private int usersNumber;
+    private String query;
 
     public MainActivityPresenter(BaseView.MainView view) {
         super(view);
@@ -36,13 +35,11 @@ public class MainActivityPresenter extends BasePresenterImpl<BaseView.MainView> 
     @Override
     public void getUsersAndDisplay(String query) {
 
-        myView.showWaitDialog("Fetching users...");
+        myView.showWaitDialog(R.string.fetch_users);
         this.query = query;
         usersList.clear();
         page = 1;
         usersNumber = 0;
-
-        Logg("Showing dialog");
 
         subscriptions.add(
                 NetworkEngine.searchUsers(query, page)
@@ -54,13 +51,13 @@ public class MainActivityPresenter extends BasePresenterImpl<BaseView.MainView> 
                            usersList = response.getUsers();
 
                             myView.showUsers(usersList);
-                            //myView.showMessage("Total users found matching search criteria: " + response.getTotalCount());
+
                             usersNumber = response.getTotalCount();
                             updateAux();
                         },
                         error -> {
                             myView.dismissWaitDialog();
-                            myView.showMessage("Error loading users!");
+                            myView.showMessage(R.string.error_loading_user);
                             error.printStackTrace();
                         }
                 ));
@@ -69,8 +66,7 @@ public class MainActivityPresenter extends BasePresenterImpl<BaseView.MainView> 
 
     @Override
     public void loadMoreUsers() {
-        myView.showWaitDialog("Fetching users...");
-        Logg("Showing dialog for more users");
+        myView.showWaitDialog(R.string.fetch_users);
 
         subscriptions.add(
                 NetworkEngine.searchUsers(query, page+1)
@@ -85,7 +81,7 @@ public class MainActivityPresenter extends BasePresenterImpl<BaseView.MainView> 
                                 },
                                 error -> {
                                     myView.dismissWaitDialog();
-                                    myView.showMessage("Error loading more users! Query: " + query + " Page: " + page);
+                                    myView.showMessage(R.string.error_loading_more_users);
                                     error.printStackTrace();
                                 }
                         ));
@@ -95,26 +91,25 @@ public class MainActivityPresenter extends BasePresenterImpl<BaseView.MainView> 
     @Override
     public void loadSpecificUser(String userName) {
 
-        myView.showWaitDialog("Fetching user..");
+        myView.showWaitDialog(R.string.fetch_user);
 
         //get user info and repos
         subscriptions.add(
                 Single.zip(
                         NetworkEngine.getUser(userName),
                         NetworkEngine.getUserRepos(userName),
-                        (userFull, userRepos) -> new UserFullAndRepos(userFull, userRepos))
+                        UserFullAndRepos::new)
                         .compose(RxUtil.applySingleSchedulers())
                         .subscribe(
                                 user -> {
                                     myView.dismissWaitDialog();
 
+                                    //ouch( I'll fix this, I promise
                                     StringBuilder repoString = new StringBuilder();
                                     for (UserRepo uR : user.userRepos) {
                                         repoString.append(uR.getRepoName());
                                         repoString.append("\n");
                                     }
-
-                                    Logg("Location: " + user.userData.getLocation());
 
                                     myView.openUserDetails(user.userData.getName(), user.userData.getAvatarUrl(),
                                             user.userData.getEmail(), user.userData.getLocation(), user.userData.getBio(),
@@ -125,14 +120,14 @@ public class MainActivityPresenter extends BasePresenterImpl<BaseView.MainView> 
                                 },
                                 error -> {
                                     myView.dismissWaitDialog();
-                                    myView.showMessage("Error loading user information!");
+                                    myView.showMessage(R.string.error_loading_user_info);
                                     error.printStackTrace();
                                 }
                         ));
     }
 
     private void updateAux() {
-        myView.setAuxText("Page: " + page + "   Users displayed: " + usersList.size() + " / " + usersNumber);
+        myView.setAuxText(" " + usersList.size() + " / " + usersNumber);
     }
 
     @Override

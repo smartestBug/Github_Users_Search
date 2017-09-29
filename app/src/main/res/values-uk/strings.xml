@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">GitHub Users Search</string>
+    <string name="app_label">App label</string>
+    <string name="search_hint">Search hint</string>
+    <string name="search_title">Search title</string>
+    <string name="title_activity_user_details">UserDetailsActivity</string>
+    <string name="action_settings">Налаштування</string>
+    <string name="fetch_user">Завантаження користувача…</string>
+    <string name="fetch_users">Завантаження користувачів…</string>
+    <string name="error_loading_user">Помилка при завантаженні користувача!</string>
+    <string name="error_loading_more_users">Помилка при завантаженні наступної сторінки користувачів!</string>
+    <string name="error_loading_user_info">Помилка при завантаженні інформації користувача!</string>
+    <string name="users_displayed">Показано користувачів:</string>
+    <string name="app_title_for_toolbar">Пошук користувачів по GitHub</string>
+    <string name="about_user">Деталі</string>
+    <string name="user_repositories">Репозиторії</string>
+</resources>
