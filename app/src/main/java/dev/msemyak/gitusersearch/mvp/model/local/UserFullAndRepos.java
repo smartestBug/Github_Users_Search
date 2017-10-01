@@ -5,9 +5,9 @@ import java.util.List;
 public class UserFullAndRepos {
 
     public UserFull userData;
-    public List<UserRepo> userRepos;
+    public String userRepos;
 
-    public UserFullAndRepos(UserFull userData, List<UserRepo> userRepos) {
+    public UserFullAndRepos(UserFull userData, String userRepos) {
         this.userData = userData;
         this.userRepos = userRepos;
     }

@@ -26,9 +26,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <include layout="@layout/incl_splash"/>
+        <include
+            android:id="@+id/screen_splash"
+            layout="@layout/incl_splash"/>
 
-        <include layout="@layout/incl_main_screen_layout"/>
+        <include
+            android:id="@+id/screen_users_list"
+            layout="@layout/incl_main_screen_layout"/>
+
+        <include
+            android:id="@+id/screen_loading_users"
+            layout="@layout/incl_load_users"/>
 
     </ViewFlipper>
 

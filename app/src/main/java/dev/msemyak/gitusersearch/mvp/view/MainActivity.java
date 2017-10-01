@@ -46,6 +46,8 @@ public class MainActivity extends BaseActivity<BasePresenter.MainActivityPresent
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         getSupportActionBar().setTitle(R.string.app_title_for_toolbar);
 
+        showScreen(R.id.screen_splash);
+
     }
 
     @Override
@@ -74,12 +76,29 @@ public class MainActivity extends BaseActivity<BasePresenter.MainActivityPresent
     }
 
     @Override
+    public void showWaitingScreen() {
+        hideKeyboard();
+        showScreen(R.id.screen_loading_users);
+    }
+
+    @Override
+    public void showUsersScreen() {
+        showScreen(R.id.screen_users_list);
+    }
+
+    @Override
+    public void showErrorScreen() {
+
+    }
+
+    void showScreen(int screen_id) {
+        viewFlipper.setDisplayedChild(viewFlipper.indexOfChild(viewFlipper.findViewById(screen_id)));
+    }
+
+    @Override
     public void showUsers(List<UserBrief> usersList) {
 
-        viewFlipper.setDisplayedChild(viewFlipper.indexOfChild(viewFlipper.findViewById(R.layout.incl_main_screen_layout)));
-
-        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
+        //hideKeyboard();
 
         if (listAdapter == null) {
 
@@ -108,6 +127,16 @@ public class MainActivity extends BaseActivity<BasePresenter.MainActivityPresent
             recyclerViewMain.scrollToPosition(0);
         }
 
+    }
+
+    private void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        try {
+            imm.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
+        }
+        catch (NullPointerException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

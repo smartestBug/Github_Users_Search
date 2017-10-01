@@ -16,6 +16,9 @@ public interface BaseView {
 
     interface MainView extends BaseView{
         void showUsers(List<UserBrief> usersList);
+        void showWaitingScreen();
+        void showUsersScreen();
+        void showErrorScreen();
         void notifyAdapterDataChange();
         void setAuxText(String msg);
         void openUserDetails(String userName, String avatarUrl, String userEmail, String userLocation,
