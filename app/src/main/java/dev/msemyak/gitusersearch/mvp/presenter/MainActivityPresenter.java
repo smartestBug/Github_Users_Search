@@ -137,46 +137,6 @@ public class MainActivityPresenter extends BasePresenterImpl<BaseView.MainView> 
                         ));
     }
 
-    /*
-    @Override
-    public void loadSpecificUser(String userName) {
-
-        myView.showWaitDialog(R.string.fetch_user);
-
-        //get user info and repos
-        subscriptions.add(
-                Single.zip(
-                        NetworkEngine.getUser(userName),
-                        NetworkEngine.getUserRepos(userName),
-                        UserFullAndRepos::new)
-                        .compose(RxUtil.applySingleSchedulers())
-                        .subscribe(
-                                user -> {
-                                    myView.dismissWaitDialog();
-
-                                    //ouch( I'll fix this, I promise
-                                    StringBuilder repoString = new StringBuilder();
-                                    for (UserRepo uR : user.userRepos) {
-                                        repoString.append(uR.getRepoName());
-                                        repoString.append("\n");
-                                    }
-
-                                    myView.openUserDetails(user.userData.getName(), user.userData.getAvatarUrl(),
-                                            user.userData.getEmail(), user.userData.getLocation(), user.userData.getBio(),
-                                            user.userData.getCreatedAt(), user.userData.getFollowers().toString(),
-                                            user.userData.getFollowing().toString(),
-                                            user.userData.getPublicRepos().toString(),
-                                            repoString.toString());
-                                },
-                                error -> {
-                                    myView.dismissWaitDialog();
-                                    myView.showMessage(R.string.error_loading_user_info);
-                                    error.printStackTrace();
-                                }
-                        ));
-    }
-*/
-
     private void updateAux() {
         myView.setAuxText(" " + usersList.size() + " / " + usersNumber);
     }
