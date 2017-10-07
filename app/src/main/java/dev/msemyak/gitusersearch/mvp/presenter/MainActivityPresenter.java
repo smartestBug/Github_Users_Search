@@ -79,6 +79,7 @@ public class MainActivityPresenter extends BasePresenterImpl<BaseView.MainView> 
     @Override
     public void loadMoreUsers() {
 
+        Logg("Loading more users");
         //myView.showWaitDialog(R.string.fetch_users);
         if (!loadingMoreUsers) {
             loadingMoreUsers = true;

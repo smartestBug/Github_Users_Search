@@ -27,6 +27,8 @@ import dev.msemyak.gitusersearch.base.BaseView;
 import dev.msemyak.gitusersearch.mvp.model.local.UserBrief;
 import dev.msemyak.gitusersearch.mvp.presenter.MainActivityPresenter;
 
+import static dev.msemyak.gitusersearch.utils.Logg.Logg;
+
 
 public class MainActivity extends BaseActivity<BasePresenter.MainActivityPresenter> implements BaseView.MainView, BaseView.RVItemClickListener, SearchView.OnQueryTextListener {
 
@@ -117,6 +119,7 @@ public class MainActivity extends BaseActivity<BasePresenter.MainActivityPresent
                 public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                     super.onScrolled(recyclerView, dx, dy);
                     if (!recyclerView.canScrollVertically(1)) {
+                        Logg("Calling loadMoreUsers");
                         myPresenter.loadMoreUsers();
                     }
                 }
