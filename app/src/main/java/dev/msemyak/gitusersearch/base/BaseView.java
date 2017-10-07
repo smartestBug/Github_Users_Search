@@ -20,6 +20,9 @@ public interface BaseView {
         void showUsersScreen();
         void showErrorScreen();
         void notifyAdapterDataChange();
+        void notifyAdapterItemInserted(int position);
+        void notifyAdapterItemRemoved(int position);
+        void scrollRecyclerViewToPosition(int position);
         void setAuxText(String msg);
         void openUserDetails(String userName, String avatarUrl, String userEmail, String userLocation,
                         String userBio, String userCreated, String userFollowers,

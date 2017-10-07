@@ -1,5 +1,7 @@
 package dev.msemyak.gitusersearch.mvp.presenter;
 
+import android.os.Handler;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,18 +11,14 @@ import dev.msemyak.gitusersearch.base.BasePresenterImpl;
 import dev.msemyak.gitusersearch.base.BaseView;
 import dev.msemyak.gitusersearch.mvp.model.NetworkEngine;
 import dev.msemyak.gitusersearch.mvp.model.local.UserBrief;
-import dev.msemyak.gitusersearch.mvp.model.local.UserFull;
 import dev.msemyak.gitusersearch.mvp.model.local.UserFullAndRepos;
 import dev.msemyak.gitusersearch.mvp.model.local.UserRepo;
 import dev.msemyak.gitusersearch.utils.RxUtil;
 import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
 import io.reactivex.Single;
-import io.reactivex.SingleSource;
-import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.functions.BiFunction;
-import io.reactivex.functions.Function;
+
+import static dev.msemyak.gitusersearch.utils.Logg.Logg;
 
 public class MainActivityPresenter extends BasePresenterImpl<BaseView.MainView> implements BasePresenter.MainActivityPresenter {
 
@@ -30,6 +28,7 @@ public class MainActivityPresenter extends BasePresenterImpl<BaseView.MainView> 
     private int page;
     private int usersNumber;
     private String query;
+    boolean loadingMoreUsers;
 
     public MainActivityPresenter(BaseView.MainView view) {
         super(view);
@@ -37,6 +36,7 @@ public class MainActivityPresenter extends BasePresenterImpl<BaseView.MainView> 
         usersList = new ArrayList<>();
         page = 1;
         usersNumber = 0;
+        loadingMoreUsers = false;
     }
 
     @Override
@@ -52,53 +52,75 @@ public class MainActivityPresenter extends BasePresenterImpl<BaseView.MainView> 
 
         subscriptions.add(
                 NetworkEngine.searchUsers(query, page)
-                .compose(RxUtil.applySingleSchedulers())
-                .subscribe(
-                        response -> {
+                        .compose(RxUtil.applySingleSchedulers())
+                        .subscribe(
+                                response -> {
 
-                            //myView.dismissWaitDialog();
+                                    //myView.dismissWaitDialog();
 
-                           usersList = response.getUsers();
+                                    usersList = response.getUsers();
 
-                            myView.showUsersScreen();
-                            myView.showUsers(usersList);
+                                    myView.showUsersScreen();
+                                    myView.showUsers(usersList);
 
-                            usersNumber = response.getTotalCount();
-                            updateAux();
-                        },
-                        error -> {
-                            //myView.dismissWaitDialog();
-                            myView.showErrorScreen();
-                            myView.showMessage(R.string.error_loading_user);
-                            error.printStackTrace();
-                        }
-                ));
+                                    usersNumber = response.getTotalCount();
+                                    updateAux();
+                                },
+                                error -> {
+                                    //myView.dismissWaitDialog();
+                                    myView.showErrorScreen();
+                                    myView.showMessage(R.string.error_loading_user);
+                                    error.printStackTrace();
+                                }
+                        ));
 
     }
 
     @Override
     public void loadMoreUsers() {
 
-        myView.showWaitDialog(R.string.fetch_users);
+        //myView.showWaitDialog(R.string.fetch_users);
+        if (!loadingMoreUsers) {
+            loadingMoreUsers = true;
 
-        subscriptions.add(
-                NetworkEngine.searchUsers(query, page+1)
+            int position = usersList.size();
+
+            Handler handler = new Handler();
+
+            final Runnable r = () -> {
+                usersList.add(position, null);
+                myView.notifyAdapterItemInserted(position);
+                myView.scrollRecyclerViewToPosition(position);
+            };
+
+            handler.post(r);
+
+            subscriptions.add(
+                NetworkEngine.searchUsers(query, page + 1)
                         .compose(RxUtil.applySingleSchedulers())
                         .subscribe(
                                 response -> {
                                     page++;
-                                    myView.dismissWaitDialog();
+                                    //myView.dismissWaitDialog();
+                                    usersList.remove(usersList.size()-1);
+                                    myView.notifyAdapterItemRemoved(usersList.size());
+
                                     myView.showUsersScreen();
                                     usersList.addAll(response.getUsers());
                                     myView.notifyAdapterDataChange();
                                     updateAux();
+                                    loadingMoreUsers = false;
                                 },
                                 error -> {
-                                    myView.dismissWaitDialog();
+                                    //myView.dismissWaitDialog();
+                                    usersList.remove(usersList.size()-1);
+                                    myView.notifyAdapterItemRemoved(usersList.size());
                                     myView.showMessage(R.string.error_loading_more_users);
                                     error.printStackTrace();
+                                    loadingMoreUsers = false;
                                 }
                         ));
+        }
 
     }
 
@@ -112,10 +134,10 @@ public class MainActivityPresenter extends BasePresenterImpl<BaseView.MainView> 
                 Single.zip(
                         NetworkEngine.getUser(userName),
                         NetworkEngine.getUserRepos(userName)
-                                        .flatMapObservable(Observable::fromIterable)
-                                        .map(UserRepo::getRepoName)
-                                        .reduce((s, s2) -> s + "\n" + s2)
-                                        .toSingle(),
+                                .flatMapObservable(Observable::fromIterable)
+                                .map(UserRepo::getRepoName)
+                                .reduce((s, s2) -> s + "\n" + s2)
+                                .toSingle(),
                         UserFullAndRepos::new)
                         .compose(RxUtil.applySingleSchedulers())
                         .subscribe(

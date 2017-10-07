@@ -12,12 +12,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import dev.msemyak.gitusersearch.R;
 import dev.msemyak.gitusersearch.base.BaseActivity;
 import dev.msemyak.gitusersearch.base.BasePresenter;
@@ -101,7 +103,7 @@ public class MainActivity extends BaseActivity<BasePresenter.MainActivityPresent
         //hideKeyboard();
 
         if (listAdapter == null) {
-
+            recyclerViewMain.setHasFixedSize(true);
             layoutManager = new LinearLayoutManager(this);
             recyclerViewMain.setLayoutManager(layoutManager);
             listAdapter = new RVAdapterUsers(usersList, this, this);
@@ -158,6 +160,21 @@ public class MainActivity extends BaseActivity<BasePresenter.MainActivityPresent
     @Override
     public void notifyAdapterDataChange() {
         listAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void notifyAdapterItemInserted(final int position) {
+        listAdapter.notifyItemInserted(position);
+    }
+
+    @Override
+    public void notifyAdapterItemRemoved(int position) {
+        listAdapter.notifyItemRemoved(position);
+    }
+
+    @Override
+    public void scrollRecyclerViewToPosition(int position) {
+        recyclerViewMain.scrollToPosition(position);
     }
 
     @Override
