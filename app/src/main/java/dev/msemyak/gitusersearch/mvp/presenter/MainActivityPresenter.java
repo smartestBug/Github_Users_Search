@@ -80,10 +80,9 @@ public class MainActivityPresenter extends BasePresenterImpl<BaseView.MainView> 
     public void loadMoreUsers() {
 
         Logg("Loading more users");
-        //myView.showWaitDialog(R.string.fetch_users);
-        if (!loadingMoreUsers) {
-            loadingMoreUsers = true;
 
+            myView.showProgress(true);
+/*
             int position = usersList.size();
 
             Handler handler = new Handler();
@@ -95,34 +94,31 @@ public class MainActivityPresenter extends BasePresenterImpl<BaseView.MainView> 
             };
 
             handler.post(r);
-
+*/
             subscriptions.add(
                 NetworkEngine.searchUsers(query, page + 1)
                         .compose(RxUtil.applySingleSchedulers())
                         .subscribe(
                                 response -> {
                                     page++;
-                                    //myView.dismissWaitDialog();
-                                    usersList.remove(usersList.size()-1);
-                                    myView.notifyAdapterItemRemoved(usersList.size());
+
+                                    //usersList.remove(usersList.size()-1);
+                                    //myView.notifyAdapterItemRemoved(usersList.size());
+                                    myView.showProgress(false);
 
                                     myView.showUsersScreen();
                                     usersList.addAll(response.getUsers());
                                     myView.notifyAdapterDataChange();
                                     updateAux();
-                                    loadingMoreUsers = false;
                                 },
                                 error -> {
-                                    //myView.dismissWaitDialog();
-                                    usersList.remove(usersList.size()-1);
-                                    myView.notifyAdapterItemRemoved(usersList.size());
+                                    //usersList.remove(usersList.size()-1);
+                                    //myView.notifyAdapterItemRemoved(usersList.size());
+                                    myView.showProgress(false);
                                     myView.showMessage(R.string.error_loading_more_users);
                                     error.printStackTrace();
-                                    loadingMoreUsers = false;
                                 }
                         ));
-        }
-
     }
 
     @Override

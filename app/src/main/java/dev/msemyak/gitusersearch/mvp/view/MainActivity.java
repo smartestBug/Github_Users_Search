@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
@@ -36,9 +37,11 @@ public class MainActivity extends BaseActivity<BasePresenter.MainActivityPresent
     @BindView(R.id.tv_aux) TextView tvAux;
     @BindView(R.id.rv_main) RecyclerView recyclerViewMain;
     @BindView(R.id.view_flipper) ViewFlipper viewFlipper;
+    @BindView(R.id.linearLayoutProgress) LinearLayout linearLayoutProgress;
 
     private RVAdapterUsers listAdapter = null;
     private LinearLayoutManager layoutManager;
+    private boolean loadingUsers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +54,8 @@ public class MainActivity extends BaseActivity<BasePresenter.MainActivityPresent
         getSupportActionBar().setTitle(R.string.app_title_for_toolbar);
 
         showScreen(R.id.screen_splash);
+
+        showProgress(false);
 
     }
 
@@ -86,6 +91,19 @@ public class MainActivity extends BaseActivity<BasePresenter.MainActivityPresent
     }
 
     @Override
+    public void showProgress(boolean visibility) {
+
+        if (visibility == true) {
+            linearLayoutProgress.setVisibility(View.VISIBLE);
+            loadingUsers = true;
+        }
+        else {
+            linearLayoutProgress.setVisibility(View.GONE);
+            loadingUsers = false;
+        }
+    }
+
+    @Override
     public void showUsersScreen() {
         showScreen(R.id.screen_users_list);
     }
@@ -118,7 +136,8 @@ public class MainActivity extends BaseActivity<BasePresenter.MainActivityPresent
                 @Override
                 public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                     super.onScrolled(recyclerView, dx, dy);
-                    if (!recyclerView.canScrollVertically(1)) {
+                    if (!recyclerView.canScrollVertically(1) && !loadingUsers) {
+                        loadingUsers = true;
                         Logg("Calling loadMoreUsers");
                         myPresenter.loadMoreUsers();
                     }

@@ -19,6 +19,7 @@ public interface BaseView {
         void showWaitingScreen();
         void showUsersScreen();
         void showErrorScreen();
+        void showProgress(boolean visibility);
         void notifyAdapterDataChange();
         void notifyAdapterItemInserted(int position);
         void notifyAdapterItemRemoved(int position);
