@@ -38,6 +38,10 @@
             android:id="@+id/screen_loading_users"
             layout="@layout/incl_load_users"/>
 
+        <include
+            android:id="@+id/screen_loading_error"
+            layout="@layout/incl_loading_error"/>
+
     </ViewFlipper>
 
 </LinearLayout>

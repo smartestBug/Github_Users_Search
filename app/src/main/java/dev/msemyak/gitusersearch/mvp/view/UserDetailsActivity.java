@@ -2,11 +2,13 @@ package dev.msemyak.gitusersearch.mvp.view;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.ViewFlipper;
 
 import butterknife.BindView;
 import dev.msemyak.gitusersearch.R;
@@ -34,6 +36,9 @@ public class UserDetailsActivity extends BaseActivity<BasePresenter.UserDetailsP
     @BindView(R.id.iv_user_email) ImageView ivUserEmail;
     @BindView(R.id.iv_user_bio) ImageView ivUserBio;
 
+    @BindView(R.id.view_flipper_user_details) ViewFlipper viewFlipper;
+    @BindView(R.id.constraint_layout_user_details) ConstraintLayout clUserDetails;
+
     String userName;
     String avatarUrl;
 
@@ -50,30 +55,23 @@ public class UserDetailsActivity extends BaseActivity<BasePresenter.UserDetailsP
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         getSupportActionBar().setTitle(userName);
 
-        showUserDetails(
-                userName,
-                getIntent().getStringExtra("email"),
-                getIntent().getStringExtra("location"),
-                getIntent().getStringExtra("bio"),
-                getIntent().getStringExtra("created"),
-                getIntent().getStringExtra("followers"),
-                getIntent().getStringExtra("following"),
-                getIntent().getStringExtra("repos"),
-                getIntent().getStringExtra("repos_names")
-        );
-
         GlideApp.with(this)
                 .load(avatarUrl)
                 .centerCrop()
                 .into(toolbarImage);
 
+        myPresenter.loadUserDetails(userName);
+
     }
 
-    public void showUserDetails(String userName, String userEmail, String userLocation,
-                                String userBio, String userCreated, String userFollowers,
-                                String userFollowing, String userRepos, String userRepoNames) {
+    @Override
+    public void showWaitingScreen() {
+        showScreen(R.id.user_details_loading);
+    }
 
-
+    @Override
+    public void showUserDetailsScreen(String userName, String avatarUrl, String userEmail, String userLocation, String userBio, String userCreated, String userFollowers, String userFollowing, String userRepos, String userRepoNames) {
+        showScreen(R.id.user_details_screen);
         tvUserName.setText(userName);
 
         if (userEmail == null) {
@@ -99,6 +97,17 @@ public class UserDetailsActivity extends BaseActivity<BasePresenter.UserDetailsP
         tvUserFollowing.setText(userFollowing);
         tvUserRepos.setText(userRepos);
         tvUserReposList.setText(userRepoNames);
+
+        clUserDetails.requestLayout();
+    }
+
+    @Override
+    public void showErrorScreen() {
+        showScreen(R.id.user_details_loading_error);
+    }
+
+    void showScreen(int screen_id) {
+        viewFlipper.setDisplayedChild(viewFlipper.indexOfChild(viewFlipper.findViewById(screen_id)));
     }
 
     @Override

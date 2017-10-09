@@ -11,8 +11,8 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
@@ -20,7 +20,6 @@ import android.widget.ViewFlipper;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.OnClick;
 import dev.msemyak.gitusersearch.R;
 import dev.msemyak.gitusersearch.base.BaseActivity;
 import dev.msemyak.gitusersearch.base.BasePresenter;
@@ -37,7 +36,7 @@ public class MainActivity extends BaseActivity<BasePresenter.MainActivityPresent
     @BindView(R.id.tv_aux) TextView tvAux;
     @BindView(R.id.rv_main) RecyclerView recyclerViewMain;
     @BindView(R.id.view_flipper) ViewFlipper viewFlipper;
-    @BindView(R.id.linearLayoutProgress) LinearLayout linearLayoutProgress;
+    //@BindView(R.id.linear_layout_loading_users) LinearLayout linearLayoutLoadingUsers;
 
     private RVAdapterUsers listAdapter = null;
     private LinearLayoutManager layoutManager;
@@ -54,8 +53,6 @@ public class MainActivity extends BaseActivity<BasePresenter.MainActivityPresent
         getSupportActionBar().setTitle(R.string.app_title_for_toolbar);
 
         showScreen(R.id.screen_splash);
-
-        showProgress(false);
 
     }
 
@@ -76,6 +73,7 @@ public class MainActivity extends BaseActivity<BasePresenter.MainActivityPresent
     @Override
     public boolean onQueryTextSubmit(String query) {
         myPresenter.getUsersAndDisplay(query);
+        recyclerViewMain.requestFocus();
         return true;
     }
 
@@ -87,20 +85,18 @@ public class MainActivity extends BaseActivity<BasePresenter.MainActivityPresent
     @Override
     public void showWaitingScreen() {
         hideKeyboard();
+
         showScreen(R.id.screen_loading_users);
-    }
 
-    @Override
-    public void showProgress(boolean visibility) {
+        LinearLayout linearLayoutLoadingUsers = findViewById(R.id.screen_loading_users);
 
-        if (visibility == true) {
-            linearLayoutProgress.setVisibility(View.VISIBLE);
-            loadingUsers = true;
+        if (linearLayoutLoadingUsers != null) {
+            ViewGroup.LayoutParams params = linearLayoutLoadingUsers.getLayoutParams();
+            params.height = ViewGroup.LayoutParams.MATCH_PARENT;
+            linearLayoutLoadingUsers.setLayoutParams(params);
         }
-        else {
-            linearLayoutProgress.setVisibility(View.GONE);
-            loadingUsers = false;
-        }
+
+
     }
 
     @Override
@@ -110,7 +106,7 @@ public class MainActivity extends BaseActivity<BasePresenter.MainActivityPresent
 
     @Override
     public void showErrorScreen() {
-
+        showScreen(R.id.screen_loading_error);
     }
 
     void showScreen(int screen_id) {
@@ -141,6 +137,10 @@ public class MainActivity extends BaseActivity<BasePresenter.MainActivityPresent
                         Logg("Calling loadMoreUsers");
                         myPresenter.loadMoreUsers();
                     }
+                    //avoid calling loadMoreUsers if scroller is at the bottom and error has happened
+                    else if (recyclerView.canScrollVertically(1) && loadingUsers) {
+                        loadingUsers = false;
+                    }
                 }
             });
 
@@ -164,22 +164,6 @@ public class MainActivity extends BaseActivity<BasePresenter.MainActivityPresent
     }
 
     @Override
-    public void openUserDetails(String userName, String avatarUrl, String userEmail, String userLocation, String userBio, String userCreated, String userFollowers, String userFollowing, String userRepos, String userRepoNames) {
-        Intent userDetailsIntent = new Intent(getApplicationContext(), UserDetailsActivity.class);
-        userDetailsIntent.putExtra("username", userName);
-        userDetailsIntent.putExtra("avatar_url", avatarUrl);
-        userDetailsIntent.putExtra("email", userEmail);
-        userDetailsIntent.putExtra("location", userLocation);
-        userDetailsIntent.putExtra("bio", userBio);
-        userDetailsIntent.putExtra("created", userCreated);
-        userDetailsIntent.putExtra("followers", userFollowers);
-        userDetailsIntent.putExtra("following", userFollowing);
-        userDetailsIntent.putExtra("repos", userRepos);
-        userDetailsIntent.putExtra("repos_names", userRepoNames);
-        startActivity(userDetailsIntent);
-    }
-
-    @Override
     public void notifyAdapterDataChange() {
         listAdapter.notifyDataSetChanged();
     }
@@ -195,6 +179,11 @@ public class MainActivity extends BaseActivity<BasePresenter.MainActivityPresent
     }
 
     @Override
+    public void notifyLoadingDone() {
+        loadingUsers = false;
+    }
+
+    @Override
     public void scrollRecyclerViewToPosition(int position) {
         recyclerViewMain.scrollToPosition(position);
     }
@@ -207,7 +196,10 @@ public class MainActivity extends BaseActivity<BasePresenter.MainActivityPresent
 
     @Override
     public void onRVItemClick(View v, String username, String avatarUrl) {
-        myPresenter.loadSpecificUser(username);
+        Intent userDetailsIntent = new Intent(getApplicationContext(), UserDetailsActivity.class);
+        userDetailsIntent.putExtra("username", username);
+        userDetailsIntent.putExtra("avatar_url", avatarUrl);
+        startActivity(userDetailsIntent);
     }
 
     @Override

@@ -8,11 +8,10 @@ public interface BasePresenter {
 
         void getUsersAndDisplay(String query);
         void loadMoreUsers();
-        void loadSpecificUser(String username);
     }
 
     interface UserDetailsPresenter extends BasePresenter{
-
+        void loadUserDetails(String username);
     }
 
 }

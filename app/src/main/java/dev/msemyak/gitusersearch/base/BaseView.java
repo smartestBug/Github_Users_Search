@@ -10,27 +10,27 @@ public interface BaseView {
 
     void showMessage(String message);
     void showMessage(int stringId);
-    void showWaitDialog(String message);
-    void showWaitDialog(int stringId);
-    void dismissWaitDialog();
 
     interface MainView extends BaseView{
         void showUsers(List<UserBrief> usersList);
         void showWaitingScreen();
         void showUsersScreen();
         void showErrorScreen();
-        void showProgress(boolean visibility);
+        void notifyLoadingDone();
         void notifyAdapterDataChange();
         void notifyAdapterItemInserted(int position);
         void notifyAdapterItemRemoved(int position);
         void scrollRecyclerViewToPosition(int position);
         void setAuxText(String msg);
-        void openUserDetails(String userName, String avatarUrl, String userEmail, String userLocation,
-                        String userBio, String userCreated, String userFollowers,
-                        String userFollowing, String userRepos, String userRepoNames);
+
     }
 
     interface UserDetailsView extends BaseView{
+        void showWaitingScreen();
+        void showUserDetailsScreen(String userName, String avatarUrl, String userEmail, String userLocation,
+                             String userBio, String userCreated, String userFollowers,
+                             String userFollowing, String userRepos, String userRepoNames);
+        void showErrorScreen();
 
     }
 

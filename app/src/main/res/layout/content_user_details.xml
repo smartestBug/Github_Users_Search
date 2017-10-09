@@ -6,8 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="dev.msemyak.gitusersearch.mvp.view.UserDetailsActivity"
-    tools:showIn="@layout/activity_user_details">
+    tools:context="dev.msemyak.gitusersearch.mvp.view.UserDetailsActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -29,11 +28,11 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <android.support.constraint.ConstraintLayout
+                android:id="@+id/constraint_layout_user_details"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingBottom="16dp"
-                >
+                android:paddingBottom="16dp">
 
                 <TextView
                     android:id="@+id/tv_user_heading"
@@ -88,6 +87,7 @@
                     android:layout_marginTop="8dp"
                     app:layout_constraintLeft_toLeftOf="@+id/iv_user_name"
                     app:layout_constraintTop_toBottomOf="@+id/iv_user_name"
+                    app:layout_goneMarginTop="8dp"
                     app:srcCompat="@drawable/ic_email"
                     tools:ignore="ContentDescription"/>
 
@@ -109,6 +109,7 @@
                     android:layout_marginTop="8dp"
                     app:layout_constraintLeft_toLeftOf="@+id/iv_user_email"
                     app:layout_constraintTop_toBottomOf="@+id/iv_user_email"
+                    app:layout_goneMarginTop="8dp"
                     app:srcCompat="@drawable/ic_location"
                     tools:ignore="ContentDescription"/>
 
@@ -129,6 +130,7 @@
                     android:layout_marginTop="8dp"
                     app:layout_constraintLeft_toLeftOf="@+id/iv_user_location"
                     app:layout_constraintTop_toBottomOf="@+id/iv_user_location"
+                    app:layout_goneMarginTop="8dp"
                     app:srcCompat="@drawable/ic_created"
                     tools:ignore="ContentDescription"/>
 

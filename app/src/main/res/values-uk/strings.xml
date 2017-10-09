@@ -15,4 +15,6 @@
     <string name="app_title_for_toolbar">Пошук користувачів по GitHub</string>
     <string name="about_user">Деталі</string>
     <string name="user_repositories">Репозиторії</string>
+    <string name="loading_error">Помилка завантаження…</string>
+    <string name="loading">Завантаження…</string>
 </resources>

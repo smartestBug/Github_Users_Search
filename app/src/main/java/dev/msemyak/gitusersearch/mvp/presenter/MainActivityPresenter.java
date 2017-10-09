@@ -11,11 +11,7 @@ import dev.msemyak.gitusersearch.base.BasePresenterImpl;
 import dev.msemyak.gitusersearch.base.BaseView;
 import dev.msemyak.gitusersearch.mvp.model.NetworkEngine;
 import dev.msemyak.gitusersearch.mvp.model.local.UserBrief;
-import dev.msemyak.gitusersearch.mvp.model.local.UserFullAndRepos;
-import dev.msemyak.gitusersearch.mvp.model.local.UserRepo;
 import dev.msemyak.gitusersearch.utils.RxUtil;
-import io.reactivex.Observable;
-import io.reactivex.Single;
 import io.reactivex.disposables.CompositeDisposable;
 
 import static dev.msemyak.gitusersearch.utils.Logg.Logg;
@@ -28,7 +24,7 @@ public class MainActivityPresenter extends BasePresenterImpl<BaseView.MainView> 
     private int page;
     private int usersNumber;
     private String query;
-    boolean loadingMoreUsers;
+    private boolean loadingMoreUsers;
 
     public MainActivityPresenter(BaseView.MainView view) {
         super(view);
@@ -42,7 +38,6 @@ public class MainActivityPresenter extends BasePresenterImpl<BaseView.MainView> 
     @Override
     public void getUsersAndDisplay(String query) {
 
-        //myView.showWaitDialog(R.string.fetch_users);
         myView.showWaitingScreen();
 
         this.query = query;
@@ -56,8 +51,6 @@ public class MainActivityPresenter extends BasePresenterImpl<BaseView.MainView> 
                         .subscribe(
                                 response -> {
 
-                                    //myView.dismissWaitDialog();
-
                                     usersList = response.getUsers();
 
                                     myView.showUsersScreen();
@@ -67,9 +60,7 @@ public class MainActivityPresenter extends BasePresenterImpl<BaseView.MainView> 
                                     updateAux();
                                 },
                                 error -> {
-                                    //myView.dismissWaitDialog();
                                     myView.showErrorScreen();
-                                    myView.showMessage(R.string.error_loading_user);
                                     error.printStackTrace();
                                 }
                         ));
@@ -79,32 +70,33 @@ public class MainActivityPresenter extends BasePresenterImpl<BaseView.MainView> 
     @Override
     public void loadMoreUsers() {
 
-        Logg("Loading more users");
+        if (usersNumber <=30) {
+            myView.notifyLoadingDone();
+            return;
+        }
 
-            myView.showProgress(true);
-/*
-            int position = usersList.size();
+        int position = usersList.size();
 
-            Handler handler = new Handler();
+        Handler handler = new Handler();
 
-            final Runnable r = () -> {
-                usersList.add(position, null);
-                myView.notifyAdapterItemInserted(position);
-                myView.scrollRecyclerViewToPosition(position);
-            };
+        final Runnable r = () -> {
+            usersList.add(position, null);
+            myView.notifyAdapterItemInserted(position);
+            myView.scrollRecyclerViewToPosition(position);
+        };
 
-            handler.post(r);
-*/
-            subscriptions.add(
+        handler.post(r);
+
+        subscriptions.add(
                 NetworkEngine.searchUsers(query, page + 1)
                         .compose(RxUtil.applySingleSchedulers())
                         .subscribe(
                                 response -> {
                                     page++;
 
-                                    //usersList.remove(usersList.size()-1);
-                                    //myView.notifyAdapterItemRemoved(usersList.size());
-                                    myView.showProgress(false);
+                                    usersList.remove(usersList.size() - 1);
+                                    myView.notifyAdapterItemRemoved(usersList.size());
+                                    myView.notifyLoadingDone();
 
                                     myView.showUsersScreen();
                                     usersList.addAll(response.getUsers());
@@ -112,49 +104,15 @@ public class MainActivityPresenter extends BasePresenterImpl<BaseView.MainView> 
                                     updateAux();
                                 },
                                 error -> {
-                                    //usersList.remove(usersList.size()-1);
-                                    //myView.notifyAdapterItemRemoved(usersList.size());
-                                    myView.showProgress(false);
+                                    usersList.remove(usersList.size() - 1);
+                                    myView.notifyAdapterItemRemoved(usersList.size());
+
                                     myView.showMessage(R.string.error_loading_more_users);
                                     error.printStackTrace();
                                 }
                         ));
     }
 
-    @Override
-    public void loadSpecificUser(String userName) {
-
-        myView.showWaitDialog(R.string.fetch_user);
-
-        //get user info and repos
-        subscriptions.add(
-                Single.zip(
-                        NetworkEngine.getUser(userName),
-                        NetworkEngine.getUserRepos(userName)
-                                .flatMapObservable(Observable::fromIterable)
-                                .map(UserRepo::getRepoName)
-                                .reduce((s, s2) -> s + "\n" + s2)
-                                .toSingle(),
-                        UserFullAndRepos::new)
-                        .compose(RxUtil.applySingleSchedulers())
-                        .subscribe(
-                                user -> {
-                                    myView.dismissWaitDialog();
-
-                                    myView.openUserDetails(user.userData.getName(), user.userData.getAvatarUrl(),
-                                            user.userData.getEmail(), user.userData.getLocation(), user.userData.getBio(),
-                                            user.userData.getCreatedAt(), user.userData.getFollowers().toString(),
-                                            user.userData.getFollowing().toString(),
-                                            user.userData.getPublicRepos().toString(),
-                                            user.userRepos);
-                                },
-                                error -> {
-                                    myView.dismissWaitDialog();
-                                    myView.showMessage(R.string.error_loading_user_info);
-                                    error.printStackTrace();
-                                }
-                        ));
-    }
 
     private void updateAux() {
         myView.setAuxText(" " + usersList.size() + " / " + usersNumber);

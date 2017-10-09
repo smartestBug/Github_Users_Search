@@ -15,4 +15,6 @@
     <string name="app_title_for_toolbar">GitHub users search</string>
     <string name="about_user">About</string>
     <string name="user_repositories">Repositories</string>
+    <string name="loading_error">Loading error…</string>
+    <string name="loading">Loading…</string>
 </resources>

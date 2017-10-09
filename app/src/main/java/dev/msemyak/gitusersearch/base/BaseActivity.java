@@ -14,8 +14,6 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
 
     public T myPresenter;
 
-    private ProgressDialog progressDialog;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,25 +32,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
     }
 
     public void showMessage(int stringId) {
-        Toast.makeText(this, getString(stringId), Toast.LENGTH_LONG).show();
-    }
-
-    public void showWaitDialog(String message) {
-
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage(message);
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progressDialog.setCancelable(true);
-        progressDialog.show();
-
-    }
-
-    public void showWaitDialog(int stringId) {
-        showWaitDialog(getString(stringId));
-    }
-
-    public void dismissWaitDialog() {
-        progressDialog.dismiss();
+        Toast.makeText(this, getString(stringId), Toast.LENGTH_SHORT).show();
     }
 
     @Override
